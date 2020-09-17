@@ -19,9 +19,9 @@ if __name__ == '__main__':
 
     k=128
     learning_rate = 0.00002
-    epochs=500
-    decay_rate=0.9
-    decay_steps=150
+    epochs=1500
+    # decay_rate=1
+    # decay_steps=150
     u=np.random.randn(row,k)
     v=np.random.randn(k,col)
     # u=normalize(u)
@@ -44,7 +44,10 @@ if __name__ == '__main__':
         u=u-learning_rate*del_u
         v=v-learning_rate*del_v
 
-        learning_rate=learning_rate*pow(decay_rate,int(epoch/decay_steps))
+        np.save('u',u)
+        np.save('v',v)
+
+        # learning_rate=learning_rate*pow(decay_rate,int(epoch/decay_steps))
         print("loss=",compute_loss(img,u,v,content))
 
     img_after=np.dot(u,v)
