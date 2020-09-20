@@ -16,16 +16,21 @@ if __name__ == '__main__':
     # img2=np.array(img)
     img, content = random_delete(origin)  #随机用平均值遮挡图片部分像素。content矩阵是原图中没被删掉的数的位置为1，其余为0
 
+    img_del = Image.fromarray(img)
+    img_del.save('woman_del.jpg')
+
 
     k=128
     learning_rate = 0.00002
-    epochs=1500
-    # decay_rate=1
-    # decay_steps=150
+    epochs=8000
+    # decay_rate=0.9999
+    # decay_steps=100
     u=np.random.randn(row,k)
     v=np.random.randn(k,col)
     # u=normalize(u)
     # v=normalize(v)
+    # u=np.load('u.npy')
+    # v=np.load('v.npy')
     for epoch in range(0,epochs):
         del_u=np.zeros((row,k))
         del_v=np.zeros((k,col))
@@ -48,10 +53,14 @@ if __name__ == '__main__':
         np.save('v',v)
 
         # learning_rate=learning_rate*pow(decay_rate,int(epoch/decay_steps))
+        print("epoch:",epoch)
         print("loss=",compute_loss(img,u,v,content))
 
+
     img_after=np.dot(u,v)
-    img_after = Image.fromarray(img_after)
+    img_after = Image.fromarray(img_after.astype('uint8')).convert('RGB')
+    # img_after = Image.fromarray(img_after)
+    img_after.save('woman_after.jpg')
     img_after.show()
 
 
